@@ -10,8 +10,8 @@ import (
 //SkillController has the data structure of skills
 type SkillController struct{}
 
-//Get returns the skills
+//GET returns the skills
 func (s SkillController) GET(c *gin.Context) {
-	skill := &models.Skill{}
-	c.JSON(http.StatusOK, skill.GetSkills())
+	model := &models.Skill{}
+	c.JSON(http.StatusOK, model.GetAll())
 }

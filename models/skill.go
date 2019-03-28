@@ -1,11 +1,11 @@
 package models
 
 type Skill struct {
-	Data      []Data      `json:"data"`
+	Items     []Items     `json:"items"`
 	Languages []Languages `json:"languages"`
 	Tags      []string    `json:"tags"`
 }
-type Data struct {
+type Items struct {
 	Title string `json:"title"`
 	Stars int    `json:"stars"`
 }
@@ -14,16 +14,16 @@ type Languages struct {
 	Description string `json:"description"`
 }
 
-func (s Skill) GetSkills() *Skill {
+func (s *Skill) GetAll() *Skill {
 	return &Skill{
-		Data:      s.GetData(),
+		Items:     s.GetData(),
 		Languages: s.GetLanguages(),
 		Tags:      s.GetTags(),
 	}
 }
 
-func (s Skill) GetData() []Data {
-	return []Data{
+func (s *Skill) GetData() []Items {
+	return []Items{
 		{
 			Title: "Front-End",
 			Stars: 10,
@@ -63,7 +63,7 @@ func (s Skill) GetData() []Data {
 	}
 }
 
-func (s Skill) GetLanguages() []Languages {
+func (s *Skill) GetLanguages() []Languages {
 	return []Languages{
 		{
 			Title:       "Portuguese (Native)",
@@ -80,7 +80,7 @@ func (s Skill) GetLanguages() []Languages {
 	}
 }
 
-func (s Skill) GetTags() []string {
+func (s *Skill) GetTags() []string {
 	return []string{
 		"FullStack",
 		"Software",

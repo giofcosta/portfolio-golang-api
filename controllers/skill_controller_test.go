@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/giofcosta/portfolio-golang-api/controllers"
 	"github.com/giofcosta/portfolio-golang-api/utils"
 
 	"github.com/giofcosta/portfolio-golang-api/models"
@@ -13,7 +14,13 @@ import (
 )
 
 func TestSkillController_GET(t *testing.T) {
-	router := server.NewRouter()
+	app := &server.Application{
+		SkillController: &controllers.SkillController{
+			//Repository: RepositoryMock{},
+		},
+	}
+
+	router := server.NewRouter(app)
 
 	w := utils.PerformRequest(router, "GET", "/skill")
 

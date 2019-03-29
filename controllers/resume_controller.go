@@ -3,14 +3,15 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/giofcosta/portfolio-golang-api/repositories"
+
 	"github.com/gin-gonic/gin"
-	"github.com/giofcosta/portfolio-golang-api/models"
 )
 
 type ResumeController struct {
+	Repository repositories.ResumeRepository
 }
 
 func (r *ResumeController) GET(c *gin.Context) {
-	model := &models.Resume{}
-	c.JSON(http.StatusOK, model.GetAll())
+	c.JSON(http.StatusOK, r.Repository.GetAll())
 }

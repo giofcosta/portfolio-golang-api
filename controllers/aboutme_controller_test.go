@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/giofcosta/portfolio-golang-api/controllers"
+
 	"github.com/giofcosta/portfolio-golang-api/utils"
 
 	"github.com/giofcosta/portfolio-golang-api/models"
@@ -12,8 +14,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type RepositoryMock struct {
+}
+
 func TestAboutMeController_GET(t *testing.T) {
-	router := server.NewRouter()
+	//Mocked app
+	app := &server.Application{
+		AboutMeController: &controllers.AboutMeController{
+			//Repository: RepositoryMock{},
+		},
+	}
+
+	router := server.NewRouter(app)
 
 	w := utils.PerformRequest(router, "GET", "/aboutme")
 

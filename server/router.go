@@ -2,10 +2,9 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/giofcosta/portfolio-golang-api/controllers"
 )
 
-func NewRouter() *gin.Engine {
+func NewRouter(app *Application) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
@@ -16,13 +15,9 @@ func NewRouter() *gin.Engine {
 		})
 	})
 
-	skill := new(controllers.SkillController)
-	aboutme := new(controllers.AboutMeController)
-	resume := new(controllers.ResumeController)
-
-	router.GET("/skill", skill.GET)
-	router.GET("/aboutme", aboutme.GET)
-	router.GET("/resume", resume.GET)
+	router.GET("/skill", app.SkillController.GET)
+	router.GET("/aboutme", app.AboutMeController.GET)
+	router.GET("/resume", app.ResumeController.GET)
 
 	return router
 }

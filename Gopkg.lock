@@ -26,6 +26,12 @@
   version = "v1.3.0"
 
 [[projects]]
+  name = "github.com/golang/mock"
+  packages = ["gomock"]
+  revision = "51421b967af1f557f93a59e0057aaf15ca02e29c"
+  version = "v1.2.0"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   revision = "b5d812f8a3706043e23a9cd5babf2e5423744d30"
@@ -116,14 +122,8 @@
   version = "v1.3.2"
 
 [[projects]]
-  name = "github.com/stretchr/objx"
-  packages = ["."]
-  revision = "477a77ecc69700c7cdeb1fa9e129548e1c1c393c"
-  version = "v0.1.1"
-
-[[projects]]
   name = "github.com/stretchr/testify"
-  packages = [".","assert","http","mock"]
+  packages = ["assert"]
   revision = "ffdc059bfe9ce6a4e144ba849dbedead332c6053"
   version = "v1.3.0"
 
@@ -160,6 +160,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "18de1540f7d76f750242428b51de233389348108a209da4f176976aee51455c1"
+  inputs-digest = "b903491746a55b8350f4f4ac3dbd1a35549d704c8aa7fdccec987d10a8516121"
   solver-name = "gps-cdcl"
   solver-version = 1

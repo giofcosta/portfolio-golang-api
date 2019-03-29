@@ -1,6 +1,9 @@
 package server
 
 import (
+	"net/http"
+	"net/http/httptest"
+
 	"github.com/giofcosta/portfolio-golang-api/config"
 	"github.com/giofcosta/portfolio-golang-api/controllers"
 	"github.com/giofcosta/portfolio-golang-api/repositories"
@@ -10,7 +13,14 @@ import (
 func Init() {
 	config := config.GetConfig()
 
-	app := &Application{
+	r := NewRouter(BuildApplication())
+
+	r.Run(config.GetString("server.port"))
+}
+
+//BuildApplication builds the application instance
+func BuildApplication() *Application {
+	return &Application{
 		AboutMeController: &controllers.AboutMeController{
 			Repository: repositories.NewAboutMeRepository(),
 		},
@@ -21,8 +31,11 @@ func Init() {
 			Repository: repositories.NewResumeRepository(),
 		},
 	}
+}
 
-	r := NewRouter(app)
-
-	r.Run(config.GetString("server.port"))
+func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, path, nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
 }

@@ -5,34 +5,35 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/giofcosta/portfolio-golang-api/controllers"
-
-	"github.com/giofcosta/portfolio-golang-api/utils"
+	"github.com/giofcosta/portfolio-golang-api/mocks"
 
 	"github.com/giofcosta/portfolio-golang-api/models"
 	"github.com/giofcosta/portfolio-golang-api/server"
 	"github.com/stretchr/testify/assert"
 )
 
-type RepositoryMock struct {
-}
-
 func TestAboutMeController_GET(t *testing.T) {
-	//Mocked app
-	app := &server.Application{
-		AboutMeController: &controllers.AboutMeController{
-			//Repository: RepositoryMock{},
-		},
+	appMock := mocks.NewApplicationMock(t)
+	model := models.AboutMe{
+		Items: []string{""},
 	}
 
-	router := server.NewRouter(app)
+	appMock.MockAboutMeRepository.
+		EXPECT().
+		GetAll().
+		Return(&model).
+		AnyTimes()
 
-	w := utils.PerformRequest(router, "GET", "/aboutme")
+	router := server.NewRouter(appMock.Mock)
+
+	w := server.PerformRequest(router, "GET", "/aboutme")
 
 	var response models.AboutMe
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
 
 	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, model, response)
 	assert.Nil(t, err)
 	assert.NotNil(t, response.Items)
+	assert.NotEmpty(t, response.Items)
 }

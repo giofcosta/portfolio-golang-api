@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/giofcosta/portfolio-golang-api/controllers"
-	"github.com/giofcosta/portfolio-golang-api/utils"
+	"github.com/giofcosta/portfolio-golang-api/mocks"
 
 	"github.com/giofcosta/portfolio-golang-api/models"
 	"github.com/giofcosta/portfolio-golang-api/server"
@@ -14,20 +13,28 @@ import (
 )
 
 func TestSkillController_GET(t *testing.T) {
-	app := &server.Application{
-		SkillController: &controllers.SkillController{
-			//Repository: RepositoryMock{},
-		},
+	appMock := mocks.NewApplicationMock(t)
+	model := models.Skill{
+		Items:     []models.Items{},
+		Languages: []models.Languages{},
+		Tags:      []string{},
 	}
 
-	router := server.NewRouter(app)
+	appMock.MockSkillRepository.
+		EXPECT().
+		GetAll().
+		Return(&model).
+		AnyTimes()
 
-	w := utils.PerformRequest(router, "GET", "/skill")
+	router := server.NewRouter(appMock.Mock)
+
+	w := server.PerformRequest(router, "GET", "/skill")
 
 	var response models.Skill
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
 
 	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, model, response)
 	assert.Nil(t, err)
 	assert.NotNil(t, response.Items)
 	assert.NotNil(t, response.Languages)

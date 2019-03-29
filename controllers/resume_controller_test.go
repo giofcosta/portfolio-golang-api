@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/giofcosta/portfolio-golang-api/controllers"
-	"github.com/giofcosta/portfolio-golang-api/utils"
+	"github.com/giofcosta/portfolio-golang-api/mocks"
 
 	"github.com/giofcosta/portfolio-golang-api/models"
 	"github.com/giofcosta/portfolio-golang-api/server"
@@ -14,20 +13,29 @@ import (
 )
 
 func TestResumeController_GET(t *testing.T) {
-	app := &server.Application{
-		ResumeController: &controllers.ResumeController{
-			//Repository: RepositoryMock{},
-		},
+	appMock := mocks.NewApplicationMock(t)
+	model := models.Resume{
+		Certifications: []models.Certifications{},
+		Education:      []models.Education{},
+		Experiences:    []models.Experiences{},
+		Readings:       []models.Readings{},
 	}
 
-	router := server.NewRouter(app)
+	appMock.MockResumeRepository.
+		EXPECT().
+		GetAll().
+		Return(&model).
+		AnyTimes()
 
-	w := utils.PerformRequest(router, "GET", "/resume")
+	router := server.NewRouter(appMock.Mock)
+
+	w := server.PerformRequest(router, "GET", "/resume")
 
 	var response models.Resume
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
 
 	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, model, response)
 	assert.Nil(t, err)
 	assert.NotNil(t, response.Certifications)
 	assert.NotNil(t, response.Education)

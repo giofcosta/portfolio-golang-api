@@ -1,0 +1,79 @@
+FORMAT: 1A
+HOST: http://api.giofcosta.com/
+
+# Portfolio Golang API
+
+A portfolio golang API made for my website
+
+## About Me [/v1/aboutme]
+
+### List all information of about me website section [GET]
+
++ Response 200 (application/json)
+    + Attributes (AboutMe)
+
+## Resume [/v1/resume]
+
+### List all information of resume website section [GET]
+
++ Response 200 (application/json)
+    + Attributes (Resume)
+
+## Skill [/v1/skill]
+
+### List all information of skill website section [GET]
+
++ Response 200 (application/json)
+    + Attributes (Skill)
+
+
+# Data Structures
+
+## AboutMe (object)
+
+- items: Info1, Info2, Info3  (array[string], required)
+
+## Resume (object)
+- experiences    (array[Experiences], required)
+- education      (array[Education], required)
+- certifications (array[Certifications], required)
+- readings       (array[Readings], required)
+
+## Experiences (object)
+- title:       title (string)
+- date:        date (string)
+- rule:        rule (string)
+- description: description (string)
+
+## Education (object)
+- title: title (string)
+- rule:  rule (string)
+- date:  date (string)
+
+## Certifications (object)
+- title:       title (string)
+- rule:        rule (string)
+- description: description (string)
+- date:        date (string)
+
+## Readings (object)
+- title:       title (string)
+- rule:        rule (string)
+- description: description (string)
+- date:        date (string)
+}
+
+## Skill (object)
+- items    (array[Items], required)
+- languages    (array[Languages], required)
+- tags    (array[string], required)
+
+## Items (object)
+- title:       title (string)
+- stars:       10 (number)
+
+## Languages (object)
+- title:       title (string)
+- description:       description (string)
+
+

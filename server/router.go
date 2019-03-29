@@ -1,11 +1,14 @@
 package server
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"github.com/gin-gonic/gin"
-	"github.com/giofcosta/portfolio-golang-api/controllers"
 )
 
-func NewRouter() *gin.Engine {
+func NewRouter(app *Application) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
@@ -16,13 +19,27 @@ func NewRouter() *gin.Engine {
 		})
 	})
 
-	skill := new(controllers.SkillController)
-	aboutme := new(controllers.AboutMeController)
-	resume := new(controllers.ResumeController)
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	router.GET("/skill", skill.GET)
-	router.GET("/aboutme", aboutme.GET)
-	router.GET("/resume", resume.GET)
+	docDir := dir + "/docs/doc.html"
+
+	if _, err := os.Stat(docDir); err == nil {
+		fmt.Println(dir+"/docs/doc.html", "path/to/whatever exists")
+		router.LoadHTMLFiles(docDir)
+
+		router.GET("/v1/doc", func(c *gin.Context) {
+			c.HTML(200, "doc.html", gin.H{})
+		})
+	} else {
+		log.Fatal("path to doc does *not* exist")
+	}
+
+	router.GET("/v1/skill", app.SkillController.GET)
+	router.GET("/v1/aboutme", app.AboutMeController.GET)
+	router.GET("/v1/resume", app.ResumeController.GET)
 
 	return router
 }

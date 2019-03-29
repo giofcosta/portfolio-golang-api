@@ -16,13 +16,13 @@ type Languages struct {
 
 func (s *Skill) GetAll() *Skill {
 	return &Skill{
-		Items:     s.GetData(),
+		Items:     s.GetItems(),
 		Languages: s.GetLanguages(),
 		Tags:      s.GetTags(),
 	}
 }
 
-func (s *Skill) GetData() []Items {
+func (s *Skill) GetItems() []Items {
 	return []Items{
 		{
 			Title: "Front-End",

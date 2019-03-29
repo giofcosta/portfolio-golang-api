@@ -1,6 +1,10 @@
 package server
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,9 +19,27 @@ func NewRouter(app *Application) *gin.Engine {
 		})
 	})
 
-	router.GET("/skill", app.SkillController.GET)
-	router.GET("/aboutme", app.AboutMeController.GET)
-	router.GET("/resume", app.ResumeController.GET)
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	docDir := dir + "/docs/doc.html"
+
+	if _, err := os.Stat(docDir); err == nil {
+		fmt.Println(dir+"/docs/doc.html", "path/to/whatever exists")
+		router.LoadHTMLFiles(docDir)
+
+		router.GET("/v1/doc", func(c *gin.Context) {
+			c.HTML(200, "doc.html", gin.H{})
+		})
+	} else {
+		log.Fatal("path to doc does *not* exist")
+	}
+
+	router.GET("/v1/skill", app.SkillController.GET)
+	router.GET("/v1/aboutme", app.AboutMeController.GET)
+	router.GET("/v1/resume", app.ResumeController.GET)
 
 	return router
 }

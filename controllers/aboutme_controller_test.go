@@ -26,7 +26,7 @@ func TestAboutMeController_GET(t *testing.T) {
 
 	router := server.NewRouter(appMock.Mock)
 
-	w := server.PerformRequest(router, "GET", "/aboutme")
+	w := server.PerformRequest(router, "GET", "/v1/aboutme")
 
 	var response models.AboutMe
 	err := json.Unmarshal([]byte(w.Body.String()), &response)

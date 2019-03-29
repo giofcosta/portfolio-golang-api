@@ -29,7 +29,7 @@ func TestResumeController_GET(t *testing.T) {
 
 	router := server.NewRouter(appMock.Mock)
 
-	w := server.PerformRequest(router, "GET", "/resume")
+	w := server.PerformRequest(router, "GET", "/v1/resume")
 
 	var response models.Resume
 	err := json.Unmarshal([]byte(w.Body.String()), &response)

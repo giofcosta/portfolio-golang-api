@@ -28,7 +28,7 @@ func TestSkillController_GET(t *testing.T) {
 
 	router := server.NewRouter(appMock.Mock)
 
-	w := server.PerformRequest(router, "GET", "/skill")
+	w := server.PerformRequest(router, "GET", "/v1/skill")
 
 	var response models.Skill
 	err := json.Unmarshal([]byte(w.Body.String()), &response)
